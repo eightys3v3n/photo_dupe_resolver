@@ -1,0 +1,10 @@
+db_path = "photos.db"
+scanner_batch_size = 100
+scanner_threads = 4
+hasher_worker_threads = 4
+hasher_batch_queue_size = 10
+hasher_batch_size = 50
+hash_algorithm = "sha256"
+perceptual_hash_algorithm = "phash"
+scan_paths = ['images_to_scan']
+scenarios = []
