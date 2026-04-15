@@ -1,6 +1,11 @@
 # Overview
 A program to resolve duplicate photos using scenarios that guide automated actions on photo collections.
 
+# Current Project State
+The web UI is functional.
+The program can scan for images, hash them, create groups of similar images, and display all that in the web UI.
+Next steps would be to come up with a sample image set to implement some scenarios and test them.
+
 # How to use
 - Run `cargo run` to start and open the Web UI.
 - Optionally run the test cases with `cargo test`.
@@ -65,3 +70,5 @@ There will be automated unit test cases and integration test cases for all funct
 Each piece of simple functionality needs at least a positive and a negative test case (like scanner finds these files, scanner doesn't find these files).
 The web UI tests can be done using an automated browser framework for Chrome.
 All test case orchestration should use a standard Rust testing library.
+
+

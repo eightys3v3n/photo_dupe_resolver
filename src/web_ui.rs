@@ -92,10 +92,35 @@ async fn index() -> impl IntoResponse {
             .group-header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
             .group-title { font-size: 18px; font-weight: 700; color: #2c3e50; }
             .group-meta { color: #5d6d7e; font-size: 13px; }
-            .thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-            .thumb-card { background: white; border: 1px solid #e4e8ed; border-radius: 8px; padding: 10px; }
-            .thumb-image-wrap { width: 100%; aspect-ratio: 1 / 1; border-radius: 6px; background: #eef2f5; overflow: hidden; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; }
-            .thumb-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+            .thumb-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 12px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding-bottom: 6px;
+                scrollbar-width: thin;
+            }
+            .thumb-card {
+                flex: 0 0 220px;
+                min-width: 220px;
+                background: white;
+                border: 1px solid #e4e8ed;
+                border-radius: 8px;
+                padding: 10px;
+            }
+            .thumb-image-wrap {
+                width: 100%;
+                height: 180px;
+                border-radius: 6px;
+                background: #eef2f5;
+                overflow: hidden;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .thumb-image { width: 100%; height: 100%; object-fit: contain; display: block; }
             .thumb-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #7f8c8d; font-size: 13px; }
             .thumb-name { font-weight: 600; margin-bottom: 4px; word-break: break-word; }
         </style>
@@ -761,6 +786,19 @@ mod tests {
         assert!(html.contains("Images"));
         assert!(html.contains("Groups"));
         assert!(html.contains("Grouper"));
+    }
+
+    #[tokio::test]
+    async fn test_index_contains_scrollable_group_preview_styles() {
+        let response = index().await.into_response();
+        let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+            .await
+            .unwrap();
+        let html = String::from_utf8(body.to_vec()).unwrap();
+
+        assert!(html.contains("overflow-x: auto"));
+        assert!(html.contains("object-fit: contain"));
+        assert!(html.contains("flex-wrap: nowrap"));
     }
 
     #[tokio::test]
